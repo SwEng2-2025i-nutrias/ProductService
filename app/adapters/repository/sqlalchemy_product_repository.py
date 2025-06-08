@@ -1,4 +1,4 @@
-from config.db import db
+from app.config.db import db
 from app.domain.product import Product
 from app.ports.product_repository_port import ProductRepositoryPort
 

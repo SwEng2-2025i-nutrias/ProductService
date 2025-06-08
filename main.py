@@ -1,5 +1,5 @@
 from flask import Flask
-from config.db import db
+from app.config.db import db
 from app.adapters.controller.product_controller import product_blueprint
 
 app = Flask(__name__)
