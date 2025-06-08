@@ -1,0 +1,39 @@
+# Entornos virtuales
+venv/
+.env/
+.venv/
+ENV/
+env/
+*.env
+
+# Archivos de Python compilados
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Archivos de configuración de Flask/instance
+instance/
+config.py
+*.sqlite3
+
+# Archivos de bases de datos locales
+*.db
+*.log
+
+# Archivos de PyCharm / VSCode / otros editores
+.idea/
+.vscode/
+*.swp
+
+# Archivos de Docker (si se usan)
+*.pid
+
+# Cobertura de pruebas
+.coverage
+htmlcov/
+.tox/
+.nox/
+
+# Otros temporales
+.DS_Store
+*.bak
