@@ -20,7 +20,7 @@ def create_app():
     db.init_app(app)
 
     # Registrar blueprints
-    app.register_blueprint(product_blueprint)
+    app.register_blueprint(product_blueprint, url_prefix="/api/v1/products")
 
     # Crear tablas si no existen (solo útil en desarrollo)
     with app.app_context():
