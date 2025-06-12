@@ -1,9 +1,12 @@
+
+
 from app.ports.product_repository_port import ProductRepositoryPort
 from app.domain.product import Product
 from datetime import datetime
 
 class ProductUseCase:
     def __init__(self, repository: ProductRepositoryPort):
+        # Aquí el atributo se llama repository
         self.repository = repository
 
     def list_products(self):

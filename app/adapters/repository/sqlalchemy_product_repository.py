@@ -39,7 +39,6 @@ class SQLAlchemyProductRepository(ProductRepositoryPort):
 
     def create(self, product):
         model = ProductModel(
-            product_id=product.product_id,
             name=product.name,
             farm_id=product.farm_id,
             type=product.type,
@@ -50,6 +49,8 @@ class SQLAlchemyProductRepository(ProductRepositoryPort):
         )
         db.session.add(model)
         db.session.commit()
+        product.product_id = model.product_id
+        return product
 
     def update(self, product_id, product):
         model = ProductModel.query.get(product_id)

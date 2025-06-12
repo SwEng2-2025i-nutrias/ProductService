@@ -1,3 +1,4 @@
+import os
 from flask import Flask
 from flasgger import Swagger
 from app.config.db import db
@@ -71,16 +72,13 @@ def create_app():
     # Registrar blueprints
     app.register_blueprint(product_bp)
 
-    # Crear tablas si no existen (solo útil en desarrollo)
+    # Crear tablas si no existen (sólo en dev)
     with app.app_context():
         db.create_all()
 
     return app
 
 if __name__ == "__main__":
-    # Obtener valores del entorno
-    debug_mode = os.getenv("FLASK_DEBUG", "False").lower() == "true"
-    env = os.getenv("FLASK_ENV", "production")
-
+    debug_mode = os.getenv("SECRET_KEY") is None or False
     app = create_app()
     app.run(host='0.0.0.0', port=5000, debug=debug_mode)
