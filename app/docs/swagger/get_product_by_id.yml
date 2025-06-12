@@ -1,0 +1,54 @@
+tags:
+  - Products
+summary: 'Obtener un producto por ID'
+description: 'Retorna un producto específico basado en su ID'
+parameters:
+  - name: product_id
+    in: path
+    type: integer
+    required: true
+    description: 'ID único del producto'
+responses:
+  200:
+    description: 'Producto encontrado'
+    schema:
+      type: object
+      properties:
+        product_id:
+          type: integer
+          description: 'ID único del producto'
+        name:
+          type: string
+          description: 'Nombre del producto'
+        farm_id:
+          type: integer
+          description: 'ID de la granja'
+        type:
+          type: string
+          description: 'Tipo de producto'
+        quantity:
+          type: integer
+          description: 'Cantidad disponible'
+        price_per_unit:
+          type: number
+          format: float
+          description: 'Precio por unidad'
+        description:
+          type: string
+          description: 'Descripción del producto'
+        harvest_date:
+          type: string
+          format: date-time
+          description: 'Fecha de cosecha (ISO format)'
+        created_at:
+          type: string
+          format: date-time
+          description: 'Fecha de creación (ISO format)'
+  404:
+    description: 'Producto no encontrado'
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: 'Product not found'

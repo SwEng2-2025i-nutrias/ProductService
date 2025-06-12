@@ -1,0 +1,27 @@
+tags:
+  - Products
+summary: 'Eliminar un producto'
+description: 'Elimina un producto específico de la base de datos'
+parameters:
+  - name: product_id
+    in: path
+    type: integer
+    required: true
+    description: 'ID único del producto'
+responses:
+  200:
+    description: 'Producto eliminado exitosamente'
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+          example: 'Product deleted'
+  404:
+    description: 'Producto no encontrado'
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: 'Product not found'

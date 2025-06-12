@@ -1,0 +1,42 @@
+tags:
+  - Products
+summary: 'Obtener todos los productos'
+description: 'Retorna una lista de todos los productos disponibles'
+responses:
+  200:
+    description: 'Lista de productos obtenida exitosamente'
+    schema:
+      type: array
+      items:
+        type: object
+        properties:
+          product_id:
+            type: integer
+            description: 'ID único del producto'
+          name:
+            type: string
+            description: 'Nombre del producto'
+          farm_id:
+            type: integer
+            description: 'ID de la granja'
+          type:
+            type: string
+            description: 'Tipo de producto'
+          quantity:
+            type: integer
+            description: 'Cantidad disponible'
+          price_per_unit:
+            type: number
+            format: float
+            description: 'Precio por unidad'
+          description:
+            type: string
+            description: 'Descripción del producto'
+          harvest_date:
+            type: string
+            format: date-time
+            description: 'Fecha de cosecha (ISO format)'
+          created_at:
+            type: string
+            format: date-time
+            description: 'Fecha de creación (ISO format)'
