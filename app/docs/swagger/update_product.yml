@@ -2,7 +2,15 @@ tags:
   - Products
 summary: 'Actualizar un producto existente'
 description: 'Actualiza un producto existente con los datos proporcionados. Todos los campos son opcionales.'
+security:
+  - Bearer: []
 parameters:
+  - name: Authorization
+    in: header
+    type: string
+    required: true
+    description: 'Token JWT en formato Bearer'
+    example: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'
   - name: product_id
     in: path
     type: integer
@@ -21,8 +29,9 @@ parameters:
           example: 'Tomates Cherry Orgánicos'
         farm_id:
           type: integer
-          description: 'ID de la granja'
+          description: 'ID de la granja (se mantiene automáticamente del token JWT, no se puede cambiar)'
           example: 1
+          readOnly: true
         type:
           type: string
           description: 'Tipo de producto'
@@ -62,6 +71,25 @@ responses:
         error:
           type: string
           example: 'No data provided'
+  401:
+    description: 'Token de autorización inválido o faltante'
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: 'Token de autorización requerido'
+        message:
+          type: string
+          example: 'Debe proporcionar un token Bearer en el header Authorization'
+  403:
+    description: 'Sin permisos para actualizar este producto'
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: 'No tienes permisos para actualizar este producto'
   404:
     description: 'Producto no encontrado'
     schema:

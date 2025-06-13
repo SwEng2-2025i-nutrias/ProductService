@@ -2,7 +2,15 @@ tags:
   - Products
 summary: 'Crear un nuevo producto'
 description: 'Crea un nuevo producto con los datos proporcionados'
+security:
+  - Bearer: []
 parameters:
+  - name: Authorization
+    in: header
+    type: string
+    required: true
+    description: 'Token JWT en formato Bearer'
+    example: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'
   - name: body
     in: body
     required: true
@@ -19,8 +27,9 @@ parameters:
           example: 'Tomates Cherry'
         farm_id:
           type: integer
-          description: 'ID de la granja'
+          description: 'ID de la granja (se obtiene automáticamente del token JWT)'
           example: 1
+          readOnly: true
         type:
           type: string
           description: 'Tipo de producto'
@@ -46,7 +55,6 @@ parameters:
       required:
         - product_id
         - name
-        - farm_id
         - type
         - quantity
         - price_per_unit
@@ -68,6 +76,17 @@ responses:
         error:
           type: string
           example: 'Missing required fields: farm_id, type'
+  401:
+    description: 'Token de autorización inválido o faltante'
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: 'Token de autorización requerido'
+        message:
+          type: string
+          example: 'Debe proporcionar un token Bearer en el header Authorization'
   500:
     description: 'Error interno del servidor'
     schema:
