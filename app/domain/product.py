@@ -3,7 +3,7 @@ from typing import Optional
 
 class Product:
     def __init__(self, 
-                 product_id: int, 
+                 product_id: Optional[int], 
                  name: str, 
                  farm_id: int,
                  type: str,

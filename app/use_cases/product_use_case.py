@@ -16,12 +16,12 @@ class ProductUseCase:
         return self.repository.get_by_id(product_id)
     
 
-    def create_product(self, product_id: int, name: str, farm_id: int, type: str, 
+    def create_product(self, name: str, farm_id: int, type: str, 
                            quantity: int, price_per_unit: float, description: str, 
                            harvest_date: datetime):
         """Crear producto con todos los campos especificados"""
         product = Product(
-            product_id=product_id,
+            product_id=None,
             name=name,
             farm_id=farm_id,
             type=type,

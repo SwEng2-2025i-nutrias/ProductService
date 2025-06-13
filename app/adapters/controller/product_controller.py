@@ -38,7 +38,7 @@ def create_product():
             return jsonify({"error": "No data provided"}), 400
         
         # Validar campos requeridos básicos (farm_id ya no es requerido en el request)
-        required_fields = ['product_id', 'name', 'type', 'quantity', 'price_per_unit', 'description']
+        required_fields = ['name', 'type', 'quantity', 'price_per_unit', 'description']
         missing_fields = [field for field in required_fields if field not in data]
         if missing_fields:
             return jsonify({"error": f"Missing required fields: {', '.join(missing_fields)}"}), 400
@@ -57,7 +57,6 @@ def create_product():
                 return jsonify({"error": "Invalid harvest_date format. Use ISO format"}), 400
         
         use_case.create_product(
-            product_id=data["product_id"],
             name=data["name"],
             farm_id=farm_id, 
             type=data["type"],

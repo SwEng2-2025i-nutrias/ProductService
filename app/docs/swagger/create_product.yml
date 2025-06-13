@@ -17,19 +17,10 @@ parameters:
     schema:
       type: object
       properties:
-        product_id:
-          type: integer
-          description: 'ID único del producto'
-          example: 1
         name:
           type: string
           description: 'Nombre del producto'
           example: 'Tomates Cherry'
-        farm_id:
-          type: integer
-          description: 'ID de la granja (se obtiene automáticamente del token JWT)'
-          example: 1
-          readOnly: true
         type:
           type: string
           description: 'Tipo de producto'
@@ -53,7 +44,6 @@ parameters:
           description: 'Fecha de cosecha (ISO format) - opcional, por defecto fecha actual'
           example: '2023-12-01T10:00:00Z'
       required:
-        - product_id
         - name
         - type
         - quantity
