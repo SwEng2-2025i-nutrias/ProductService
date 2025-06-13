@@ -108,14 +108,14 @@ def update_product(product_id):
             except ValueError:
                 return jsonify({"error": "Invalid harvest_date format. Use ISO format"}), 400
         
-        # Si se proporciona farm_id en el request, verificar que coincida con el del token
-        if 'farm_id' in data and data['farm_id'] != g.user_id:
-            return jsonify({"error": "No puedes cambiar el farm_id a una granja diferente"}), 403
+        farm_id = g.user_id
+        if not farm_id:
+            return jsonify({"error": "user_id not found in authentication token"}), 400
         
         updated = use_case.update_product_full(
             product_id=product_id,
             name=data.get("name", existing_product.name),
-            farm_id=g.user_id,  # Usar user_id como farm_id
+            farm_id=farm_id,
             type=data.get("type", existing_product.type),
             quantity=data.get("quantity", existing_product.quantity),
             price_per_unit=data.get("price_per_unit", existing_product.price_per_unit),

@@ -120,7 +120,6 @@ Documentación Swagger: **http://localhost:5000/swagger/**
 
 ```json
 {
-  "product_id": 1,
   "name": "Tomates Cherry",
   "farm_id": 1,
   "type": "Vegetal",
@@ -169,10 +168,9 @@ curl http://localhost:5000/api/v1/products/1
 ```bash
 curl -X POST http://localhost:5000/api/v1/products \
   -H "Content-Type: application/json" \
+  -H "Authorization: Bearer tu-token-jwt" \
   -d '{
-    "product_id": 1,
     "name": "Tomates Cherry",
-    "farm_id": 1,
     "type": "Vegetal",
     "quantity": 100,
     "price_per_unit": 2.50,
@@ -183,9 +181,7 @@ curl -X POST http://localhost:5000/api/v1/products \
 
 **Campos requeridos:**
 
-- `product_id` (integer): ID único del producto
 - `name` (string): Nombre del producto
-- `farm_id` (integer): ID de la granja
 - `type` (string): Tipo de producto
 - `quantity` (integer): Cantidad disponible
 - `price_per_unit` (float): Precio por unidad
@@ -194,6 +190,7 @@ curl -X POST http://localhost:5000/api/v1/products \
 **Campos opcionales:**
 
 - `harvest_date` (string, ISO format): Fecha de cosecha (por defecto: fecha actual)
+
 
 #### 4. Actualizar un producto
 
