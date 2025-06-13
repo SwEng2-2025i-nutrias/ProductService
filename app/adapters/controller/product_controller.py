@@ -49,7 +49,7 @@ def create_product():
             except ValueError:
                 return jsonify({"error": "Invalid harvest_date format. Use ISO format"}), 400
         
-        use_case.create_product_full(
+        use_case.create_product(
             product_id=data["product_id"],
             name=data["name"],
             farm_id=data["farm_id"],

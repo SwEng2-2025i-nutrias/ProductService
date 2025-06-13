@@ -14,22 +14,9 @@ class ProductUseCase:
 
     def get_product(self, product_id: int):
         return self.repository.get_by_id(product_id)
+    
 
-    def create_product(self, product_id: int, name: str, price: float):
-        # Crear producto con valores por defecto para demo/desarrollo
-        product = Product(
-            product_id=product_id,
-            name=name,
-            farm_id=1,  # Valor por defecto
-            type="General",  # Valor por defecto
-            quantity=10,  # Valor por defecto
-            price_per_unit=price,
-            description=f"Producto {name}",  # Descripción por defecto
-            harvest_date=datetime.now()  # Fecha actual
-        )
-        self.repository.create(product)
-
-    def create_product_full(self, product_id: int, name: str, farm_id: int, type: str, 
+    def create_product(self, product_id: int, name: str, farm_id: int, type: str, 
                            quantity: int, price_per_unit: float, description: str, 
                            harvest_date: datetime):
         """Crear producto con todos los campos especificados"""
