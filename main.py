@@ -59,6 +59,14 @@ def create_app():
         "schemes": ["http", "https"],
         "consumes": ["application/json"],
         "produces": ["application/json"],
+        "securityDefinitions": {
+            "Bearer": {
+                "type": "apiKey",
+                "name": "Authorization",
+                "in": "header",
+                "description": "Token JWT en formato Bearer. Ejemplo: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'"
+            }
+        },
         "tags": [
             {
                 "name": "Products",
