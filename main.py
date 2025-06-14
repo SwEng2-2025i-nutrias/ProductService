@@ -1,5 +1,6 @@
 import os
 from flask import Flask
+from flask_cors import CORS
 from flasgger import Swagger
 from app.config.db import db
 from app.adapters.controller.product_controller import product_bp
@@ -12,6 +13,15 @@ load_dotenv()
 
 def create_app():
     app = Flask(__name__)
+
+    # Configurar CORS
+    CORS(app, resources={
+        r"/api/*": {
+            "origins": ["http://localhost:5173"],
+            "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+            "allow_headers": ["Content-Type", "Authorization"]
+        }
+    })
 
     # Configuración desde variables de entorno
     database_url = os.getenv("DATABASE_URL")
