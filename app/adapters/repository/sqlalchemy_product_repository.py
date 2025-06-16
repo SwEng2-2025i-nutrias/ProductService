@@ -7,15 +7,18 @@ from typing import Dict, Any
 class ProductModel(db.Model):
     __tablename__ = 'products'
 
-    product_id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), nullable=False)
-    farm_id = db.Column(db.Integer, nullable=False)
-    type = db.Column(db.String(100), nullable=False)
-    quantity = db.Column(db.Integer, nullable=False)
-    price_per_unit = db.Column(db.Float, nullable=False)
-    description = db.Column(db.String(255), nullable=False)
-    harvest_date = db.Column(db.DateTime, nullable=False)
-    created_at = db.Column(db.DateTime, default=datetime.now)
+    product_id: int = db.Column(db.Integer, primary_key=True)
+    name: str = db.Column(db.String(100), nullable=False)
+    farm_id: int = db.Column(db.Integer, nullable=False)
+    type: str = db.Column(db.String(100), nullable=False)
+    quantity: int = db.Column(db.Integer, nullable=False)
+    price_per_unit: float = db.Column(db.Float, nullable=False)
+    description: str = db.Column(db.String(255), nullable=False)
+    harvest_date: datetime = db.Column(db.DateTime, nullable=False)
+    created_at: datetime = db.Column(db.DateTime, default=datetime.now)
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
 
     def to_entity(self):
         return Product(
@@ -39,9 +42,7 @@ class SQLAlchemyProductRepository(ProductRepositoryPort):
         return model.to_entity() if model else None
 
     def get_by_farm_id(self, farm_id: int):
-        """
-        Obtener todos los productos de una granja específica
-        """
+       
         models = ProductModel.query.filter_by(farm_id=farm_id).all()
         return [model.to_entity() for model in models]
 
@@ -75,14 +76,10 @@ class SQLAlchemyProductRepository(ProductRepositoryPort):
         return False
 
     def patch(self, product_id: int, updates: Dict[str, Any]) -> bool:
-        """
-        Actualizar parcialmente un producto con solo los campos proporcionados
-        """
         model = ProductModel.query.get(product_id)
         if not model:
             return False
         
-        # Mapear los campos del diccionario a los atributos del modelo
         field_mapping = {
             'name': 'name',
             'type': 'type',
@@ -92,7 +89,6 @@ class SQLAlchemyProductRepository(ProductRepositoryPort):
             'harvest_date': 'harvest_date'
         }
         
-        # Actualizar solo los campos proporcionados
         for field, value in updates.items():
             if field in field_mapping:
                 setattr(model, field_mapping[field], value)
