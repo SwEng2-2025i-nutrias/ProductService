@@ -5,7 +5,7 @@ class Product:
     def __init__(self, 
                  product_id: Optional[int], 
                  name: str, 
-                 farm_id: int,
+                 farm_id: str,
                  type: str,
                  quantity: int,
                  price_per_unit: float,

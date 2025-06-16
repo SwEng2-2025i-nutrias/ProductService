@@ -9,7 +9,7 @@ class ProductModel(db.Model):
 
     product_id: int = db.Column(db.Integer, primary_key=True)
     name: str = db.Column(db.String(100), nullable=False)
-    farm_id: int = db.Column(db.Integer, nullable=False)
+    farm_id: str = db.Column(db.String(36), nullable=False)
     type: str = db.Column(db.String(100), nullable=False)
     quantity: int = db.Column(db.Integer, nullable=False)
     price_per_unit: float = db.Column(db.Float, nullable=False)
@@ -41,7 +41,7 @@ class SQLAlchemyProductRepository(ProductRepositoryPort):
         model = ProductModel.query.get(product_id)
         return model.to_entity() if model else None
 
-    def get_by_farm_id(self, farm_id: int):
+    def get_by_farm_id(self, farm_id: str):
        
         models = ProductModel.query.filter_by(farm_id=farm_id).all()
         return [model.to_entity() for model in models]

@@ -12,7 +12,7 @@ class ProductRepositoryPort(ABC):
         pass
 
     @abstractmethod
-    def get_by_farm_id(self, farm_id: int) -> List[Product]:
+    def get_by_farm_id(self, farm_id: str) -> List[Product]:
      
         pass
 

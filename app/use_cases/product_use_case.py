@@ -14,11 +14,11 @@ class ProductUseCase:
     def get_product(self, product_id: int):
         return self.repository.get_by_id(product_id)
     
-    def get_products_by_farm(self, farm_id: int):
+    def get_products_by_farm(self, farm_id: str):
        
         return self.repository.get_by_farm_id(farm_id)
 
-    def create_product(self, name: str, farm_id: int, type: str, 
+    def create_product(self, name: str, farm_id: str, type: str, 
                            quantity: int, price_per_unit: float, description: str, 
                            harvest_date: datetime):
         product = Product(
@@ -37,7 +37,7 @@ class ProductUseCase:
         product = Product(
             product_id=product_id,
             name=name,
-            farm_id=1,  
+            farm_id="1",  
             type="General",  
             quantity=10,  
             price_per_unit=price,
@@ -46,7 +46,7 @@ class ProductUseCase:
         )
         return self.repository.update(product_id, product)
 
-    def update_product_full(self, product_id: int, name: str, farm_id: int, type: str,
+    def update_product_full(self, product_id: int, name: str, farm_id: str, type: str,
                            quantity: int, price_per_unit: float, description: str,
                            harvest_date: datetime):
         product = Product(
