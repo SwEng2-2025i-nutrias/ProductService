@@ -12,6 +12,19 @@ class ProductRepositoryPort(ABC):
         pass
 
     @abstractmethod
+    def get_by_farm_id(self, farm_id: int) -> List[Product]:
+        """
+        Obtener todos los productos de una granja específica
+        
+        Args:
+            farm_id: ID de la granja
+            
+        Returns:
+            Lista de productos de la granja
+        """
+        pass
+
+    @abstractmethod
     def create(self, product: Product) -> None:
         pass
 

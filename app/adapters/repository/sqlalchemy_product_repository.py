@@ -38,6 +38,13 @@ class SQLAlchemyProductRepository(ProductRepositoryPort):
         model = ProductModel.query.get(product_id)
         return model.to_entity() if model else None
 
+    def get_by_farm_id(self, farm_id: int):
+        """
+        Obtener todos los productos de una granja específica
+        """
+        models = ProductModel.query.filter_by(farm_id=farm_id).all()
+        return [model.to_entity() for model in models]
+
     def create(self, product):
         model = ProductModel(
             name=product.name,

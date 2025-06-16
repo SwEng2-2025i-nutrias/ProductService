@@ -14,6 +14,17 @@ class ProductUseCase:
     def get_product(self, product_id: int):
         return self.repository.get_by_id(product_id)
     
+    def get_products_by_farm(self, farm_id: int):
+        """
+        Obtener todos los productos de una granja específica
+        
+        Args:
+            farm_id: ID de la granja (obtenido del JWT)
+            
+        Returns:
+            Lista de productos de la granja
+        """
+        return self.repository.get_by_farm_id(farm_id)
 
     def create_product(self, name: str, farm_id: int, type: str, 
                            quantity: int, price_per_unit: float, description: str, 

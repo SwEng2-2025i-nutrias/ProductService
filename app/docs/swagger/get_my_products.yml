@@ -1,0 +1,86 @@
+summary: 'Obtener mis productos'
+description: 'Obtiene todos los productos que pertenecen al usuario autenticado. El farm_id se obtiene automáticamente del token JWT.'
+tags:
+  - Products
+security:
+  - Bearer: []
+responses:
+  200:
+    description: 'Lista de productos del usuario obtenida exitosamente'
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+          example: 'Products retrieved for farm 123'
+        count:
+          type: integer
+          description: 'Número total de productos encontrados'
+          example: 3
+        products:
+          type: array
+          items:
+            type: object
+            properties:
+              product_id:
+                type: integer
+                example: 1
+              name:
+                type: string
+                example: 'Tomates Cherry'
+              farm_id:
+                type: integer
+                example: 123
+              type:
+                type: string
+                example: 'Vegetal'
+              quantity:
+                type: integer
+                example: 100
+              price_per_unit:
+                type: number
+                format: float
+                example: 2.50
+              description:
+                type: string
+                example: 'Tomates cherry frescos y orgánicos'
+              harvest_date:
+                type: string
+                format: date-time
+                example: '2024-01-15T10:30:00Z'
+              created_at:
+                type: string
+                format: date-time
+                example: '2024-01-10T08:00:00Z'
+              total_value:
+                type: number
+                format: float
+                example: 250.0
+                description: 'Valor total calculado (quantity * price_per_unit)'
+  400:
+    description: 'Error de token o datos inválidos'
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: 'user_id not found in authentication token'
+  401:
+    description: 'Token de autorización inválido o faltante'
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: 'Token de autorización requerido'
+        message:
+          type: string
+          example: 'Debe proporcionar un token Bearer en el header Authorization'
+  500:
+    description: 'Error interno del servidor'
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: 'Database connection error'

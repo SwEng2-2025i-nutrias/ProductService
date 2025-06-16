@@ -31,6 +31,26 @@ def get_all_products():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+@product_bp.route('/me', methods=['GET'])
+@swag_from(os.path.join(SWAGGER_DIR, 'get_my_products.yml'))
+@require_auth
+def get_my_products():
+    """Obtener todos los productos del usuario autenticado"""
+    try:
+        # Obtener farm_id del token JWT validado (usando user_id como farm_id)
+        farm_id = g.user_id
+        if not farm_id:
+            return jsonify({"error": "user_id not found in authentication token"}), 400
+        
+        products = use_case.get_products_by_farm(farm_id)
+        return jsonify({
+            "message": f"Products retrieved for farm {farm_id}",
+            "count": len(products),
+            "products": [p.to_dict() for p in products]
+        }), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
 @product_bp.route('', methods=['POST'])
 @swag_from(os.path.join(SWAGGER_DIR, 'create_product.yml'))
 @require_auth
