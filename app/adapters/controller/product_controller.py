@@ -2,7 +2,11 @@ from flask import request, Blueprint, jsonify, g
 from flasgger import swag_from
 from app.use_cases.product_use_case import ProductUseCase
 from app.adapters.repository.sqlalchemy_product_repository import SQLAlchemyProductRepository
-from app.adapters.middleware.auth_middleware import require_auth
+from app.adapters.middleware.auth_middleware import AuthMiddleware
+
+# Inicializar middleware de autenticación
+auth_middleware = AuthMiddleware()
+require_auth = auth_middleware.require_auth
 from datetime import datetime
 import os
 
@@ -125,6 +129,48 @@ def update_product(product_id):
         if updated:
             return jsonify({"message": "Product updated"}), 200
         return jsonify({"error": "Failed to update product"}), 500
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@product_bp.route('/<int:product_id>', methods=['PATCH'])
+@swag_from(os.path.join(SWAGGER_DIR, 'patch_product.yml'))
+@require_auth
+def patch_product(product_id):
+    """Actualizar parcialmente un producto existente"""
+    try:
+        data = request.get_json()
+        if not data:
+            return jsonify({"error": "No data provided"}), 400
+        
+        # Obtener el producto existente para verificar permisos
+        existing_product = use_case.get_product(product_id)
+        if not existing_product:
+            return jsonify({"error": "Product not found"}), 404
+        
+        # Verificar que el producto pertenece a la granja del usuario autenticado
+        if existing_product.farm_id != g.user_id:
+            return jsonify({"error": "No tienes permisos para actualizar este producto"}), 403
+        
+        # Validar que se proporcionen datos para actualizar
+        if not data:
+            return jsonify({"error": "No fields provided for update"}), 400
+        
+        try:
+            # Intentar actualizar el producto
+            updated_product = use_case.patch_product(product_id, data)
+            
+            if updated_product:
+                return jsonify({
+                    "message": "Product updated successfully",
+                    "product": updated_product.to_dict()
+                }), 200
+            else:
+                return jsonify({"error": "Failed to update product"}), 500
+                
+        except ValueError as e:
+            # Error de validación desde el caso de uso
+            return jsonify({"error": str(e)}), 400
+            
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 

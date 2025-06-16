@@ -2,6 +2,7 @@ from app.config.db import db
 from app.domain.product import Product
 from app.ports.product_repository_port import ProductRepositoryPort
 from datetime import datetime
+from typing import Dict, Any
 
 class ProductModel(db.Model):
     __tablename__ = 'products'
@@ -65,6 +66,36 @@ class SQLAlchemyProductRepository(ProductRepositoryPort):
             db.session.commit()
             return True
         return False
+
+    def patch(self, product_id: int, updates: Dict[str, Any]) -> bool:
+        """
+        Actualizar parcialmente un producto con solo los campos proporcionados
+        """
+        model = ProductModel.query.get(product_id)
+        if not model:
+            return False
+        
+        # Mapear los campos del diccionario a los atributos del modelo
+        field_mapping = {
+            'name': 'name',
+            'type': 'type',
+            'quantity': 'quantity',
+            'price_per_unit': 'price_per_unit',
+            'description': 'description',
+            'harvest_date': 'harvest_date'
+        }
+        
+        # Actualizar solo los campos proporcionados
+        for field, value in updates.items():
+            if field in field_mapping:
+                setattr(model, field_mapping[field], value)
+        
+        try:
+            db.session.commit()
+            return True
+        except Exception:
+            db.session.rollback()
+            return False
 
     def delete(self, product_id):
         model = ProductModel.query.get(product_id)

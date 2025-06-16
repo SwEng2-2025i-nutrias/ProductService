@@ -1,0 +1,143 @@
+summary: 'Actualizar parcialmente un producto'
+description: 'Actualiza solo los campos especificados de un producto existente. No es necesario enviar todos los campos, solo aquellos que se desean modificar.'
+tags:
+  - Products
+security:
+  - Bearer: []
+parameters:
+  - name: product_id
+    in: path
+    type: integer
+    required: true
+    description: 'ID único del producto a actualizar'
+    example: 1
+  - name: product_updates
+    in: body
+    required: true
+    description: 'Campos del producto a actualizar (solo los campos proporcionados serán modificados)'
+    schema:
+      type: object
+      properties:
+        name:
+          type: string
+          description: 'Nombre del producto'
+          example: 'Tomates Cherry Orgánicos'
+          maxLength: 100
+        type:
+          type: string
+          description: 'Tipo o categoría del producto'
+          example: 'Vegetal'
+          maxLength: 100
+        quantity:
+          type: integer
+          description: 'Cantidad disponible del producto'
+          example: 150
+          minimum: 0
+        price_per_unit:
+          type: number
+          format: float
+          description: 'Precio por unidad del producto'
+          example: 2.75
+          minimum: 0
+        description:
+          type: string
+          description: 'Descripción detallada del producto'
+          example: 'Tomates cherry cultivados orgánicamente, perfectos para ensaladas'
+          maxLength: 255
+        harvest_date:
+          type: string
+          format: date-time
+          description: 'Fecha de cosecha del producto (formato ISO 8601)'
+          example: '2024-01-15T10:30:00Z'
+      additionalProperties: false
+responses:
+  200:
+    description: 'Producto actualizado exitosamente'
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+          example: 'Product updated successfully'
+        product:
+          type: object
+          properties:
+            product_id:
+              type: integer
+              example: 1
+            name:
+              type: string
+              example: 'Tomates Cherry Orgánicos'
+            farm_id:
+              type: integer
+              example: 123
+            type:
+              type: string
+              example: 'Vegetal'
+            quantity:
+              type: integer
+              example: 150
+            price_per_unit:
+              type: number
+              format: float
+              example: 2.75
+            description:
+              type: string
+              example: 'Tomates cherry cultivados orgánicamente, perfectos para ensaladas'
+            harvest_date:
+              type: string
+              format: date-time
+              example: '2024-01-15T10:30:00Z'
+            created_at:
+              type: string
+              format: date-time
+              example: '2024-01-10T08:00:00Z'
+            total_value:
+              type: number
+              format: float
+              example: 412.5
+  400:
+    description: 'Error de validación o datos inválidos'
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          examples:
+            no_data: 'No data provided'
+            no_fields: 'No fields provided for update'
+            invalid_field: 'Campos no permitidos para actualización: campo_invalido'
+            invalid_type: 'quantity debe ser un número entero'
+            invalid_date: 'harvest_date debe tener formato ISO (YYYY-MM-DDTHH:MM:SS)'
+  401:
+    description: 'Token de autorización inválido o faltante'
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: 'Token de autorización requerido'
+  403:
+    description: 'No tienes permisos para actualizar este producto'
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: 'No tienes permisos para actualizar este producto'
+  404:
+    description: 'Producto no encontrado'
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: 'Product not found'
+  500:
+    description: 'Error interno del servidor'
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: 'Failed to update product'
