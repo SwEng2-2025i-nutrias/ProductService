@@ -4,20 +4,16 @@ from app.use_cases.product_use_case import ProductUseCase
 from app.adapters.repository.sqlalchemy_product_repository import SQLAlchemyProductRepository
 from app.adapters.middleware.auth_middleware import AuthMiddleware
 
-# Inicializar middleware de autenticación
 auth_middleware = AuthMiddleware()
 require_auth = auth_middleware.require_auth
 from datetime import datetime
 import os
 
-# Crear blueprint para productos
 product_bp = Blueprint('products', __name__, url_prefix='/api/v1/products')
 
-# Inicializar repositorio y caso de uso
 repository = SQLAlchemyProductRepository()
 use_case = ProductUseCase(repository)
 
-# Obtener la ruta base del proyecto
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
 SWAGGER_DIR = os.path.join(BASE_DIR, 'app', 'docs', 'swagger')
 
@@ -37,7 +33,6 @@ def get_all_products():
 def get_my_products():
     """Obtener todos los productos del usuario autenticado"""
     try:
-        # Obtener farm_id del token JWT validado (usando user_id como farm_id)
         farm_id = g.user_id
         if not farm_id:
             return jsonify({"error": "user_id not found in authentication token"}), 400
@@ -61,18 +56,15 @@ def create_product():
         if not data:
             return jsonify({"error": "No data provided"}), 400
         
-        # Validar campos requeridos básicos (farm_id ya no es requerido en el request)
         required_fields = ['name', 'type', 'quantity', 'price_per_unit', 'description']
         missing_fields = [field for field in required_fields if field not in data]
         if missing_fields:
             return jsonify({"error": f"Missing required fields: {', '.join(missing_fields)}"}), 400
         
-        # Obtener farm_id del token JWT validado (usando user_id como farm_id)
         farm_id = g.user_id
         if not farm_id:
             return jsonify({"error": "user_id not found in authentication token"}), 400
         
-        # Parsear fecha de cosecha si se proporciona
         harvest_date = datetime.now()
         if 'harvest_date' in data and data['harvest_date']:
             try:
@@ -115,16 +107,13 @@ def update_product(product_id):
         if not data:
             return jsonify({"error": "No data provided"}), 400
         
-        # Obtener el producto existente
         existing_product = use_case.get_product(product_id)
         if not existing_product:
             return jsonify({"error": "Product not found"}), 404
         
-        # Verificar que el producto pertenece a la granja del usuario autenticado
         if existing_product.farm_id != g.user_id:
             return jsonify({"error": "No tienes permisos para actualizar este producto"}), 403
         
-        # Parsear fecha de cosecha si se proporciona
         harvest_date = existing_product.harvest_date
         if 'harvest_date' in data and data['harvest_date']:
             try:
@@ -162,21 +151,17 @@ def patch_product(product_id):
         if not data:
             return jsonify({"error": "No data provided"}), 400
         
-        # Obtener el producto existente para verificar permisos
         existing_product = use_case.get_product(product_id)
         if not existing_product:
             return jsonify({"error": "Product not found"}), 404
         
-        # Verificar que el producto pertenece a la granja del usuario autenticado
         if existing_product.farm_id != g.user_id:
             return jsonify({"error": "No tienes permisos para actualizar este producto"}), 403
         
-        # Validar que se proporcionen datos para actualizar
         if not data:
             return jsonify({"error": "No fields provided for update"}), 400
         
         try:
-            # Intentar actualizar el producto
             updated_product = use_case.patch_product(product_id, data)
             
             if updated_product:
@@ -188,7 +173,6 @@ def patch_product(product_id):
                 return jsonify({"error": "Failed to update product"}), 500
                 
         except ValueError as e:
-            # Error de validación desde el caso de uso
             return jsonify({"error": str(e)}), 400
             
     except Exception as e:
@@ -200,12 +184,10 @@ def patch_product(product_id):
 def delete_product(product_id):
     """Eliminar un producto"""
     try:
-        # Obtener el producto existente para verificar permisos
         existing_product = use_case.get_product(product_id)
         if not existing_product:
             return jsonify({"error": "Product not found"}), 404
         
-        # Verificar que el producto pertenece a la granja del usuario autenticado
         if existing_product.farm_id != g.user_id:
             return jsonify({"error": "No tienes permisos para eliminar este producto"}), 403
         

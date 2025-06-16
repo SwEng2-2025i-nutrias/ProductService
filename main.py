@@ -97,6 +97,6 @@ def create_app():
     return app
 
 if __name__ == "__main__":
-    debug_mode = os.getenv("SECRET_KEY") is None or False
+    debug_mode = os.getenv("FLASK_DEBUG") is None or False
     app = create_app()
     app.run(host='0.0.0.0', port=5000, debug=debug_mode)
