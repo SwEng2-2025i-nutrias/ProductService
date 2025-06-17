@@ -81,3 +81,17 @@ celerybeat.pid
 # Logs
 *.log
 logs/
+
+
+.Python
+[Bb]in
+[Ii]nclude
+[Ll]ib
+[Ll]ib64
+[Ll]ocal
+[Ss]cripts
+pyvenv.cfg
+.venv
+pip-selfcheck.json
+
+
