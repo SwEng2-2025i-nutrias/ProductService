@@ -1,0 +1,107 @@
+tags:
+  - Products
+summary: 'Actualizar un producto existente'
+description: 'Actualiza un producto existente con los datos proporcionados. Todos los campos son opcionales.'
+security:
+  - Bearer: []
+parameters:
+  - name: Authorization
+    in: header
+    type: string
+    required: true
+    description: 'Token JWT en formato Bearer'
+    example: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'
+  - name: product_id
+    in: path
+    type: integer
+    required: true
+    description: 'ID del producto a actualizar'
+    example: 1
+  - name: body
+    in: body
+    required: true
+    schema:
+      type: object
+      properties:
+        name:
+          type: string
+          description: 'Nombre del producto'
+          example: 'Tomates Cherry Orgánicos'
+        farm_id:
+          type: integer
+          description: 'ID de la granja (se mantiene automáticamente del token JWT, no se puede cambiar)'
+          example: 1
+          readOnly: true
+        type:
+          type: string
+          description: 'Tipo de producto'
+          example: 'Vegetal Orgánico'
+        quantity:
+          type: integer
+          description: 'Cantidad disponible'
+          example: 150
+        price_per_unit:
+          type: number
+          format: float
+          description: 'Precio por unidad'
+          example: 3.00
+        description:
+          type: string
+          description: 'Descripción del producto'
+          example: 'Tomates cherry orgánicos certificados'
+        harvest_date:
+          type: string
+          format: date-time
+          description: 'Fecha de cosecha (ISO format)'
+          example: '2023-12-01T10:00:00Z'
+responses:
+  200:
+    description: 'Producto actualizado exitosamente'
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+          example: 'Product updated'
+  400:
+    description: 'Datos de entrada inválidos'
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: 'No data provided'
+  401:
+    description: 'Token de autorización inválido o faltante'
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: 'Token de autorización requerido'
+        message:
+          type: string
+          example: 'Debe proporcionar un token Bearer en el header Authorization'
+  403:
+    description: 'Sin permisos para actualizar este producto'
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: 'No tienes permisos para actualizar este producto'
+  404:
+    description: 'Producto no encontrado'
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: 'Product not found'
+  500:
+    description: 'Error interno del servidor'
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
