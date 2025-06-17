@@ -24,6 +24,7 @@ ProductService/
 │   ├── ports/                    # Interfaces/Puertos
 │   ├── use_cases/               # Casos de uso de la aplicación
 │   ├── config/                  # Configuración de la aplicación
+│   ├── test/                    # Tests realizados
 │   └── docs/                    # Documentación
 │       └── swagger/             # Especificaciones Swagger/OpenAPI
 ├── main.py                      # Punto de entrada de la aplicación
@@ -35,23 +36,6 @@ ProductService/
 ├── CHANGELOG.md                # Registro de cambios
 ├── LICENSE                     # Licencia del proyecto
 └── README.md                   # Este archivo
-```
-
-## 📋 Requisitos Previos
-
-Antes de comenzar, asegúrate de tener instalado:
-
-- **[Docker Desktop](https://www.docker.com/products/docker-desktop/)** (versión 4.0 o superior)
-- **[Docker Compose](https://docs.docker.com/compose/install/)** (incluido con Docker Desktop)
-
-### Verificar Instalación
-
-```bash
-# Verificar Docker
-docker --version
-
-# Verificar Docker Compose
-docker-compose --version
 ```
 
 ## ⚡ Instalación y Ejecución
@@ -99,7 +83,7 @@ pip install -r requirements.txt
 
 ```bash
 # CMD
-pip install -r requirements.txt
+python main.py
 ```
 
 ### 4. Verificar que Funciona
@@ -116,14 +100,15 @@ Documentación Swagger: **http://localhost:5000/swagger/**
 
 ### Productos
 
-| Método   | Endpoint                | Descripción                  |
-| -------- | ----------------------- | ---------------------------- |
-| `GET`    | `/api/v1/products`      | Obtener todos los productos  |
-| `GET`    | `/api/v1/products/{id}` | Obtener producto por ID      |
-| `POST`   | `/api/v1/products`      | Crear nuevo producto         |
-| `PUT`    | `/api/v1/products/{id}` | Actualizar producto completo |
-| `PATCH`  | `/api/v1/products/{id}` | Actualizar producto          |
-| `DELETE` | `/api/v1/products/{id}` | Eliminar producto            |
+| Método   | Endpoint                | Descripción                         |
+| -------- | ----------------------- | ----------------------------------- |
+| `GET`    | `/api/v1/products`      | Obtener todos los productos         |
+| `GET`    | `/api/v1/products/{id}` | Obtener producto por ID             |
+| `GET`    | `/api/v1/products/me`   | Obtener producto del usuario activo |
+| `POST`   | `/api/v1/products`      | Crear nuevo producto                |
+| `PUT`    | `/api/v1/products/{id}` | Actualizar producto completo        |
+| `PATCH`  | `/api/v1/products/{id}` | Actualizar producto                 |
+| `DELETE` | `/api/v1/products/{id}` | Eliminar producto                   |
 
 ### Estructura del Producto
 
