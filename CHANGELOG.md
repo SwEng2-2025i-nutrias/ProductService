@@ -4,6 +4,16 @@ Todos los cambios notables de este proyecto serán documentados en este archivo.
 
 El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.0.0/) y este proyecto adhiere al [Versionado Semántico](https://semver.org/lang/es/).
 
+## [0.3.0] - 2025-06-15
+
+### Agregado
+
+- Adición de test para el controlador del producto
+
+### Cambiado
+
+- Se hace modificaciones a README.md
+
 ## [0.2.0] - 2025-06-12
 
 ### Agregado
