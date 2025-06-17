@@ -1,14 +1,13 @@
 # 🛍️ Product Service
 
-**Product Service** es una API REST desarrollada con Flask que implementa un microservicio para la gestión de productos, siguiendo los principios de arquitectura hexagonal.
+**Product Service** es una API REST desarrollada con Flask que implementa un servicio para la gestión de productos, siguiendo los principios de arquitectura hexagonal.
 
 ## 🚀 Tecnologías Utilizadas
 
 - **Python 3.9+**
 - **Flask 2.3.2** - Framework web
-- **PostgreSQL 13** - Base de datos
+- **SQLite** - Base de datos
 - **SQLAlchemy** - ORM para Python
-- **Docker & Docker Compose** - Contenedorización
 - **psycopg2-binary** - Adaptador PostgreSQL para Python
 
 ## 📁 Estructura del Proyecto
@@ -70,7 +69,7 @@ Crea un archivo `.env` si necesitas personalizar la configuración:
 
 ```env
 # Base de datos
-DATABASE_URL=postgresql://postgres:postgres@db:5432/productdb
+DATABASE_URL=sqlite:///./products.db
 
 # Flask
 FLASK_APP=main.py
@@ -78,20 +77,29 @@ FLASK_ENV=development
 FLASK_DEBUG=True
 SECRET_KEY=tu-clave-secreta-aqui
 
-# PostgreSQL
-POSTGRES_USER=postgres
-POSTGRES_PASSWORD=postgres
-POSTGRES_DB=productdb
 ```
 
 ### 3. Ejecutar la Aplicación
 
-```bash
-# Construir y ejecutar todos los servicios
-docker-compose up --build
+#### Crear entorno virtual
 
-# Para ejecutar en segundo plano
-docker-compose up -d --build
+```bash
+# CMD
+call .\.venv\Scripts\activate
+```
+
+#### Instalar dependencias
+
+```bash
+# CMD
+pip install -r requirements.txt
+```
+
+#### Correr aplicación
+
+```bash
+# CMD
+pip install -r requirements.txt
 ```
 
 ### 4. Verificar que Funciona
@@ -108,13 +116,14 @@ Documentación Swagger: **http://localhost:5000/swagger/**
 
 ### Productos
 
-| Método   | Endpoint                | Descripción                 |
-| -------- | ----------------------- | --------------------------- |
-| `GET`    | `/api/v1/products`      | Obtener todos los productos |
-| `GET`    | `/api/v1/products/{id}` | Obtener producto por ID     |
-| `POST`   | `/api/v1/products`      | Crear nuevo producto        |
-| `PUT`    | `/api/v1/products/{id}` | Actualizar producto         |
-| `DELETE` | `/api/v1/products/{id}` | Eliminar producto           |
+| Método   | Endpoint                | Descripción                  |
+| -------- | ----------------------- | ---------------------------- |
+| `GET`    | `/api/v1/products`      | Obtener todos los productos  |
+| `GET`    | `/api/v1/products/{id}` | Obtener producto por ID      |
+| `POST`   | `/api/v1/products`      | Crear nuevo producto         |
+| `PUT`    | `/api/v1/products/{id}` | Actualizar producto completo |
+| `PATCH`  | `/api/v1/products/{id}` | Actualizar producto          |
+| `DELETE` | `/api/v1/products/{id}` | Eliminar producto            |
 
 ### Estructura del Producto
 
@@ -163,7 +172,7 @@ curl http://localhost:5000/api/v1/products
 curl http://localhost:5000/api/v1/products/1
 ```
 
-#### 3. Crear un producto
+#### 3. Crear un producto (requiere auth)
 
 ```bash
 curl -X POST http://localhost:5000/api/v1/products \
@@ -191,8 +200,7 @@ curl -X POST http://localhost:5000/api/v1/products \
 
 - `harvest_date` (string, ISO format): Fecha de cosecha (por defecto: fecha actual)
 
-
-#### 4. Actualizar un producto
+#### 4. Actualizar un producto (requiere auth)
 
 ```bash
 curl -X PUT http://localhost:5000/api/v1/products/1 \
@@ -206,7 +214,17 @@ curl -X PUT http://localhost:5000/api/v1/products/1 \
 
 **Nota:** Todos los campos son opcionales en la actualización. Solo se actualizarán los campos proporcionados.
 
-#### 5. Eliminar un producto
+### 5. PATCH actualizar parcialmente (requiere auth)
+
+curl -X PATCH \
+ http://localhost:5000/api/v1/products/42 \
+ -H "Content-Type: application/json" \
+ -H "Authorization: Bearer <TU_TOKEN>" \
+ -d '{
+"price_per_unit": 2.0
+}'
+
+#### 6. Eliminar un producto (requiere auth)
 
 ```bash
 curl -X DELETE http://localhost:5000/api/v1/products/1
@@ -236,6 +254,7 @@ app/
 ├── use_cases/         # Casos de uso (lógica de aplicación)
 ├── config/            # Configuración de la aplicación
 └── docs/              # Documentación API (Swagger)
+└── tests/              # Test de la aplicación
 ```
 
 **Principios implementados:**
