@@ -1,4 +1,5 @@
 from flask import Flask
+from prometheus_flask_exporter import PrometheusMetrics
 from app.config.db import db
 from app.config.app_config import configure_app
 from app.adapters.controller.product_controller import product_bp
@@ -13,6 +14,9 @@ def create_app():
     
     # Inicializar la base de datos
     db.init_app(app)
+
+    # Inicializar Prometheus Metrics
+    PrometheusMetrics(app)
     
     # Registrar blueprints
     app.register_blueprint(product_bp)
