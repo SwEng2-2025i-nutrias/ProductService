@@ -10,7 +10,7 @@ class AuthMiddleware:
     def __init__(self, auth_service_url: Optional[str] = None):
         self.auth_service_url = auth_service_url or os.getenv(
             'AUTH_SERVICE_URL', 
-            'http://localhost:5001/auth/validate-token'
+            'http://127.0.0.1:5001/auth/validate-token'
         )
     
     def _extract_token(self) -> Optional[str]:
