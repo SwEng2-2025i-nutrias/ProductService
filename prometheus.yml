@@ -1,13 +1,22 @@
 global:
-  scrape_interval: 15s
-  evaluation_interval: 15s
+  scrape_interval: 15s # Frecuencia con la que Prometheus recolecta métricas
+  evaluation_interval: 15s # Frecuencia con la que se evalúan reglas (si usas alertas)
 
 rule_files:
   # - "first_rules.yml"
   # - "second_rules.yml"
 
+# Lista de endpoints que Prometheus monitoreará
 scrape_configs:
-  # Configuración para el servicio web Flask (corriendo localmente)
+  # Configuración para el servicio de autenticación Flask (externo)
+  - job_name: 'authentication-service'
+    static_configs:
+      - targets: ['host.docker.internal:5001']
+    metrics_path: '/metrics'
+    scrape_interval: 10s
+    scrape_timeout: 10s
+
+  # Configuración para el servicio de productos Flask (externo)
   - job_name: 'product-service'
     static_configs:
       - targets: ['host.docker.internal:5000']
@@ -15,8 +24,15 @@ scrape_configs:
     scrape_interval: 10s
     scrape_timeout: 10s
 
+  # Configuración para el servicio de búsqueda de productos Flask (externo)
+  - job_name: 'product-search-service'
+    static_configs:
+      - targets: ['host.docker.internal:5002']
+    metrics_path: '/metrics'
+    scrape_interval: 10s
+    scrape_timeout: 10s
+
   # Configuración para Prometheus mismo
-  - job_name: 'prometheus'p
+  - job_name: 'prometheus'
     static_configs:
       - targets: ['localhost:9090']
-
